@@ -15,11 +15,19 @@ const defaultOrigins = [
     'http://api.helix.local',
     'https://helix.cyborgsolutions.com.br',
     'https://www.helix.cyborgsolutions.com.br',
+    'http://helix.cyborgsolutions.com.br',
 ];
 
 // Read from environment variable if provided
 const envOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()) || [];
 
+// Debug logs
+console.log('ALLOWED_ORIGINS env:', process.env.ALLOWED_ORIGINS);
+console.log('Parsed env origins:', envOrigins);
+console.log('Default origins:', defaultOrigins);
+
 const allowedOrigins = [...defaultOrigins, ...envOrigins];
+
+console.log('Final allowed origins:', allowedOrigins);
 
 export default allowedOrigins;
