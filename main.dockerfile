@@ -34,8 +34,9 @@ WORKDIR /app
 COPY server/package*.json .
 RUN npm clean-install
 
-# Copy the builded server
-COPY server/build ./
+# Copy server source and build
+COPY server/ .
+RUN npm run build
 
 ################################################################################
 # Build Client
@@ -47,8 +48,9 @@ WORKDIR /app
 COPY client/package*.json .
 RUN npm install
 
-# Copy the builded client
-COPY client/dist ./
+# Copy client source and build
+COPY client/ .
+RUN npm run build
 
 ################################################################################
 # Build Final Image
@@ -60,9 +62,9 @@ WORKDIR /helix
 RUN apk add --update nodejs
 
 # Copy the app
-COPY --from=builder-server /app ./build
+COPY --from=builder-server /app/build ./build
 COPY --from=builder-server /app/node_modules ./node_modules
-COPY --from=builder-client /app ./build/www
+COPY --from=builder-client /app/dist ./build/www
 
 # Set the port
 EXPOSE 3001
