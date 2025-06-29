@@ -1,4 +1,4 @@
-const allowedOrigins = [
+const defaultOrigins = [
     'http://localhost:3000',
     'http://localhost:5173',
     'http://localhost:3001',
@@ -13,6 +13,13 @@ const allowedOrigins = [
     'http://helix.local:3000',
     'http://helix.local:3001',
     'http://api.helix.local',
+    'https://helix.cyborgsolutions.com.br',
+    'https://www.helix.cyborgsolutions.com.br',
 ];
+
+// Read from environment variable if provided
+const envOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()) || [];
+
+const allowedOrigins = [...defaultOrigins, ...envOrigins];
 
 export default allowedOrigins;

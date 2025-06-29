@@ -1,31 +1,59 @@
 ---
+version: "3.7"
 services:
-  app:
-    build:
-      context: .
-      dockerfile: main.dockerfile
-    container_name: helix
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - 3001:3001
-    restart: unless-stopped
-    env_file: ./.env
+  helix-app:
+    image: cyborgsolutionstech/helix-ptbr:latest
     environment:
       - HELIX_DB_NAME=helix
       - HELIX_DB_HOST=helix-db
-      - HELIX_DB_USER=${DB_USER}
-      - HELIX_DB_PASSWORD=${DB_ROOT_PASSWORD}
-      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
-      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      - HELIX_DB_USER=root
+      - HELIX_DB_PASSWORD=43f3c82025eff00d8206967a12f9b1da
+      - ACCESS_TOKEN_SECRET=43f3c82025eff00d8206967a12f9b1da
+      - REFRESH_TOKEN_SECRET=43f3c82025eff00d8206967a12f9b1da43f3c82025eff00d8206967a12f9b1da
+      - ALLOWED_ORIGINS=https://helix.cyborgsolutions.com.br,https://www.helix.cyborgsolutions.com.br
+    networks:
+      - CSNet
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.helix-app.rule=Host(`helix.cyborgsolutions.com.br`)
+        - traefik.http.routers.helix-app.entrypoints=websecure
+        - traefik.http.routers.helix-app.tls.certresolver=letsencryptresolver
+        - traefik.http.services.helix-app.loadbalancer.server.port=3001
+        - traefik.http.services.helix-app.loadbalancer.passHostHeader=true
 
-  db:
-    image: xavier2p/helix-db:latest
-    container_name: helix-db
-    restart: unless-stopped
-    volumes:
-      - ${DB_PATH}:/var/lib/mariadb
+  helix-db:
+    image: cyborgsolutionstech/helix-db:latest
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-    env_file: ./.env
+      - MYSQL_ROOT_PASSWORD=43f3c82025eff00d8206967a12f9b1da
+    volumes:
+      - helix_db_data:/var/lib/mariadb
+    networks:
+      - CSNet
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: any
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+volumes:
+  helix_db_data:
+    external: true
+    name: helix_db_data
+
+networks:
+  CSNet:
+    external: true
+    name: CSNet
