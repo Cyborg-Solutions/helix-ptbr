@@ -2,7 +2,7 @@
 version: "3.7"
 services:
   helix-app:
-    image: cyborgsolutionstech/helix-ptbr:latest
+    image: cyborgsolutionstech/helix-ptbr:dev-0.0.1
     environment:
       - HELIX_DB_NAME=helix
       - HELIX_DB_HOST=helix-db
@@ -10,7 +10,7 @@ services:
       - HELIX_DB_PASSWORD=43f3c82025eff00d8206967a12f9b1da
       - ACCESS_TOKEN_SECRET=43f3c82025eff00d8206967a12f9b1da
       - REFRESH_TOKEN_SECRET=43f3c82025eff00d8206967a12f9b1da43f3c82025eff00d8206967a12f9b1da
-      - ALLOWED_ORIGINS=https://helix.cyborgsolutions.com.br,https://www.helix.cyborgsolutions.com.br
+      - ALLOWED_ORIGINS=https://helix.cyborgsolutions.com.br
     networks:
       - CSNet
     deploy:
@@ -23,9 +23,16 @@ services:
         - traefik.enable=true
         - traefik.http.routers.helix-app.rule=Host(`helix.cyborgsolutions.com.br`)
         - traefik.http.routers.helix-app.entrypoints=websecure
+        - traefik.http.routers.helix-app.service=helix-app
         - traefik.http.routers.helix-app.tls.certresolver=letsencryptresolver
         - traefik.http.services.helix-app.loadbalancer.server.port=3001
         - traefik.http.services.helix-app.loadbalancer.passHostHeader=true
+        # Configurações específicas para CORS
+        - traefik.http.middlewares.helix-cors.headers.accesscontrolalloworiginlist=https://helix.cyborgsolutions.com.br
+        - traefik.http.middlewares.helix-cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS,PATCH
+        - traefik.http.middlewares.helix-cors.headers.accesscontrolallowheaders=Content-Type,Authorization,X-Requested-With,Accept,Origin
+        - traefik.http.middlewares.helix-cors.headers.accesscontrolallowcredentials=true
+        - traefik.http.routers.helix-app.middlewares=helix-cors
 
   helix-db:
     image: cyborgsolutionstech/helix-db:latest
