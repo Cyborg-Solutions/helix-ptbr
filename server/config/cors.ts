@@ -2,13 +2,15 @@ import cors, { CorsOptions } from 'cors';
 import allowedOrigins from './allowed-origins';
 import logger from '../tools/logger';
 
+console.log('🚀 CORS CONFIG LOADED - DEBUG MODE ENABLED 🚀');
+console.log('🚀 ALLOWING ALL ORIGINS TEMPORARILY 🚀');
+
 const corsOptions: CorsOptions = {
     origin: (origin, callback) => {
-        console.log('CORS check - Origin received:', origin);
-        console.log('CORS check - Allowed origins:', allowedOrigins);
+        console.log('🚀 CORS DEBUG - Origin received:', origin);
+        console.log('🚀 CORS DEBUG - Allowing ALL origins for testing');
         
         // Temporariamente permitir todas as origens para debug
-        console.log('CORS check - Allowing all origins for debug');
         callback(null, true);
         
         // Código original comentado:
