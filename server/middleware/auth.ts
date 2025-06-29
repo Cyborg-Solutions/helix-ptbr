@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 require('dotenv').config();
 
 const login = (req: Request, res: Response, next: NextFunction) => {
+    console.log('Login payload recebido:', req.body);
     const isValid = validate.login(req.body);
     if (!isValid) {
         res.status(sc.NOT_ACCEPTABLE).json({ message: 'Invalid request body' });
