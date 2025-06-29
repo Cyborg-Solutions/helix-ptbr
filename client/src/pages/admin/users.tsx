@@ -4,7 +4,18 @@ import { useUsers } from './users.logic';
 import HelixTableSort from '../../components/list-view';
 
 const ListUsers = (): JSX.Element => {
-  const { users, toggleModal, disableUser, enableUser, show } = useUsers();
+  const { users, toggleModal, show } = useUsers();
+  
+  const handleDisableUser = (id: string) => {
+    // Implementar lógica de desabilitar usuário
+    console.log('Disable user:', id);
+  };
+
+  const handleEnableUser = (id: string) => {
+    // Implementar lógica de habilitar usuário
+    console.log('Enable user:', id);
+  };
+
   return (
     <>
       <Group align="apart">
@@ -69,7 +80,11 @@ const ListUsers = (): JSX.Element => {
       {/*    ))}*/}
       {/*  </tbody>*/}
       {/*</Table>*/}
-      <HelixTableSort data={users} type="users" />
+      <HelixTableSort 
+        data={users} 
+        type="users" 
+        callbacks={[handleDisableUser, handleEnableUser]}
+      />
       <ModalAddUser show={show} toggleModal={toggleModal} />
     </>
   );

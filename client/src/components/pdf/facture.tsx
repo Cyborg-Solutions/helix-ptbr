@@ -46,8 +46,7 @@ const FactureContent = ({ data }: { data: any }) => (
     </Page>
 );
 
-//@ts-expect-error
-const Facture = ({ id, data }: { id: string; data: any }) => (
+const Facture = ({ data }: { data: any }) => (
     <Document title={`facture-${data.factureNumber}`} author="Helix">
         <FactureContent data={data} />
     </Document>

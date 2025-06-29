@@ -11,7 +11,7 @@ import ModalUserSettings from '../../components/user-settings';
 const Home = () => {
   const { auth } = useAuth();
   const navigate = useNavigate();
-  const [event, setEvent] = useState({
+  const [event] = useState({
     id: '',
     title: '',
     start: new Date(),

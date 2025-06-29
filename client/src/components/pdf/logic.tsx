@@ -14,7 +14,7 @@ const useViewPDF = (id: string, type: string) => {
 
     const handleDownload = () => {
         if (type === 'facture') {
-            pdf(<Facture data={data} id={id} />)
+            pdf(<Facture data={data} />)
                 .toBlob()
                 .then((blob) =>
                     saveAs(blob, `${moment(data.date).format('YYYYMMDD')}-facture-${data.factureNumber}.pdf`)

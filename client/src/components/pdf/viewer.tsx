@@ -26,7 +26,7 @@ const ViewPDF = ({ open, handler, id, type }: { open: boolean; handler: any; id:
           {data ? (
             <PDFViewer style={PDFStyles.viewer}>
               {type === 'facture' ? (
-                <Facture data={data} id={id} />
+                <Facture data={data} />
               ) : (
                 // ) : type === 'patient' ? (
                 <PatientPDF data={data} />

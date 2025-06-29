@@ -10,7 +10,7 @@ const Patients = ({ add }: { add: boolean }): JSX.Element => {
   const [mainColor, setMainColor] = useState('fr-yellow.4');
   const { colorScheme } = useMantineColorScheme();
   // const { classes } = PatientsStyles();
-  const { patients, error, changeView, isGrid, show, nbPatients, toggleModal } = usePatients(add);
+  const { patients, show, nbPatients, toggleModal } = usePatients(add);
   const navigate = useNavigate();
   const handleRowClick = (id: string) => {
     navigate(`/patients/${id}`);
