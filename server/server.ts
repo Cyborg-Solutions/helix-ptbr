@@ -50,6 +50,6 @@ api.all('*', (req: Request, res: Response) => {
 api.use(errorHandler);
 
 // Start
-api.listen(port, () => {
+api.listen(port, '0.0.0.0', () => {
   logger.info(`Server listening on port ${port}`);
 });
